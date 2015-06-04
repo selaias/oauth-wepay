@@ -9,7 +9,8 @@ OAuth.registerService('wePay', 2, null, function(query, callback) {
   var accessToken= getTokenResponse(query)
 
   var userData = getUserData(accessToken)
-
+  
+ 
   var serviceData = {
     accessToken: accessToken,
     expiresAt: (moment().add(30, 'days').format('x')),
@@ -26,7 +27,7 @@ OAuth.registerService('wePay', 2, null, function(query, callback) {
 
   return {
     serviceData: serviceData,
-    options: {profile: {username: userData.user_name, firstName:userData.first_name, lastName:userData.last_name }}
+    options: {profile: {name: userData.first_name + ' ' + userData.last_name }}
   };
 });
 
@@ -59,7 +60,7 @@ var getTokenResponse = function (query) {
 
   var request_details = {
     method: "POST",
-    headers: {'content-type' : 'application/x-www-form-urlencoded'},
+    headers: {'User-Agent': userAgent, 'content-type' : 'application/x-www-form-urlencoded'},
     uri: 'https://stage.wepayapi.com/v2/oauth2/token',
     body: body_string
   };
@@ -88,10 +89,11 @@ var getUserData = function (accessToken) {
   var fut = new Future();
   var request_user = {
     method: 'GET',
-    headers: {'Accept': 'application/vnd.com.wepay.User+json',
+    headers: {'User-Agent': userAgent,  'Content-Type': 'application/json',
               'Authorization' : 'Bearer ' + accessToken},
-    uri: "https://stage.wepay.com/v2/user"
+    uri: "https://stage.wepayapi.com/v2/user"
   };
+
   request(request_user, function(error, response, body) {
     var responseContent;
     try {
@@ -107,6 +109,6 @@ var getUserData = function (accessToken) {
   return userRes;
 };
 
-Wepay.retrieveCredential = function(credentialToken, credentialSecret) {
+WePay.retrieveCredential = function(credentialToken, credentialSecret) {
   return OAuth.retrieveCredential(credentialToken, credentialSecret);
 };
