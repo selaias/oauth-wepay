@@ -6,14 +6,14 @@ WePay = {};
 
 OAuth.registerService('wePay', 2, null, function(query, callback) {
 
-  var accessToken= getTokenResponse(query)
-
-  var userData = getUserData(accessToken)
+  var response = getTokenResponse(query);
+  var accessToken = response.access_token;
+  var userData = getUserDate(accessToken);
   
  
   var serviceData = {
     accessToken: accessToken,
-    expiresAt: (moment().add(30, 'days').format('x')),
+    expiresAt: (+new Date) + (1000 * response.expires_in),
     id: userData.user_id,
     email: userData.email
   };
@@ -74,7 +74,7 @@ var getTokenResponse = function (query) {
       error = new Meteor.Error(204, 'Response is not a valid JSON string.');
       fut.throw(error);
     } finally {
-      fut.return(responseContent.access_token);
+      fut.return(responseContent);
     }
   });
   var res = fut.wait();
