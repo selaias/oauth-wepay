@@ -1,6 +1,6 @@
 Package.describe({
   name: 'selaias:oauth-wepay',
-  version: '0.2.0',
+  version: '0.3.0',
   summary: 'An implementation of the Wepay OAuth flow.',
   git: 'https://github.com/selaias/oauth-wepay.git',
   documentation: 'README.md'

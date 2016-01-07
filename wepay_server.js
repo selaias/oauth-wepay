@@ -8,7 +8,7 @@ OAuth.registerService('wePay', 2, null, function(query, callback) {
 
   var response = getTokenResponse(query);
   var accessToken = response.access_token;
-  var userData = getUserDate(accessToken);
+  var userData = getUserData(accessToken);
   
  
   var serviceData = {
